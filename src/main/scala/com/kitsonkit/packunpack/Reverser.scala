@@ -8,7 +8,7 @@ import scala.annotation.tailrec
 object Reverser {
   @tailrec
   def reverse[T](value: List[T], accumulator: List[T] = List.empty[T]): List[T] = value match {
-    case List() => accumulator
+    case Nil => accumulator
     case List(oneValue) => oneValue :: accumulator
     case head :: body => reverse(body, head :: accumulator)
   }
