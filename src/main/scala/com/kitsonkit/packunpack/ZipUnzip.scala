@@ -21,5 +21,18 @@ object ZipUnzip {
     }
   }
 
-  def unpack(input: String): String = ""
+  @tailrec
+  def unpack(input: String, next: Int = 0, digits: Int = 0, res: String = ""): String = {
+    def noZero(num:Int) = if (num == 0) 1 else num
+    //if non digit - use as is
+    //if digit - collect until no digit, and put as much as big (collected digits).toInt
+    if (next >= input.size) res
+    else {
+      if (input(next).isDigit) {
+        unpack(input, next + 1, digits*10+(input(next) - '0'), res)
+      } else {
+        unpack(input, next + 1, 0, res + input(next).toString * noZero(digits))
+      }
+    }
+  }
 }
