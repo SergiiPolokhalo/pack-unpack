@@ -17,7 +17,7 @@ class ZipUnzipSuite extends FunSuite{
     assert(ZipUnzip.pack("AAAAABBBCCC") == "5A3B3C")
   }
   test("5A3B3C -> AAAAABBBCCC") {
-    assert(ZipUnzip.pack("5A3B3C") == "AAAAABBBCCC")
+    assert(ZipUnzip.unpack("5A3B3C") == "AAAAABBBCCC")
   }
 
   test("AAAAABCDDD -> 5ABC3D") {
@@ -25,7 +25,7 @@ class ZipUnzipSuite extends FunSuite{
   }
 
   test("5ABC3D -> AAAAABCDDD") {
-    assert(ZipUnzip.pack("5ABC3D") == "AAAAABCDDD")
+    assert(ZipUnzip.unpack("5ABC3D") == "AAAAABCDDD")
   }
 
 }
