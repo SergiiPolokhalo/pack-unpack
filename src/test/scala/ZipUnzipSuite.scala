@@ -2,8 +2,14 @@ import org.scalatest.FunSuite
 import com.kitsonkit.packunpack.ZipUnzip
 
 class ZipUnzipSuite extends FunSuite{
-  test("A must be pack int A") {
+  test("Empty must be empty") {
+    assert(ZipUnzip.pack("") == "")
+  }
+
+  test("A must be pack into A") {
     assert(ZipUnzip.pack("A") == "A")
+  }
+  test("A must be unpack into A") {
     assert(ZipUnzip.unpack("A") == "A")
   }
 
