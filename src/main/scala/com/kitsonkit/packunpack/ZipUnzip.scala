@@ -6,33 +6,28 @@ import scala.annotation.tailrec
  * Object that takes a string of similar consecutive letters (all letters must be same case) and transforms this into a sequence consisting of the count of each consecutive letter followed by that letter. If a letter only appears once, do not apply a count. This should also demonstrate tail recursion. Also write a method that reverses this so that the output of the first method ran with this method will return the original result.
  */
 object ZipUnzip {
+  private def noOne(num: Int) = if (num == 1) "" else num
+
+  private def noZero(num:Int) = if (num == 0) 1 else num
 
   @tailrec
   def pack(input: String, next: Int = 1, count: Int = 1, res: String = ""): String = {
-    def noOne(num: Int) = if (num == 1) "" else num
-
-    if (next > input.size) res
-    else {
-      if (next == input.size || input(next) != input(next - 1)) {
-        pack(input, next + 1, 1, s"$res${noOne(count)}${input(next - 1)}")
-      } else {
-        pack(input, next + 1, count + 1, res)
-      }
+    val (forward, backward) = (next + 1, next - 1)
+    (next > input.size, next == input.size , next < input.size && input(next) != input(backward)) match {
+      case (true, _, _) => res
+      case (_, _, true) => pack(input, forward, 1, s"$res${noOne(count)}${input(backward)}")
+      case (_, true, _) => pack(input, forward, 1, s"$res${noOne(count)}${input(backward)}")
+      case _            => pack(input, forward, count + 1, res)
     }
   }
 
   @tailrec
   def unpack(input: String, next: Int = 0, digits: Int = 0, res: String = ""): String = {
-    def noZero(num:Int) = if (num == 0) 1 else num
-    //if non digit - use as is
-    //if digit - collect until no digit, and put as much as big (collected digits).toInt
-    if (next >= input.size) res
-    else {
-      if (input(next).isDigit) {
-        unpack(input, next + 1, digits*10+(input(next) - '0'), res)
-      } else {
-        unpack(input, next + 1, 0, res + input(next).toString * noZero(digits))
-      }
+    val forward = next + 1
+    (next == input.size, next<input.size && input(next).isDigit) match {
+      case (true, _)  => res
+      case (_, true)  => unpack(input, forward, digits*10+(input(next) - '0'), res)
+      case _          => unpack(input, forward, 0, res + input(next).toString * noZero(digits))
     }
   }
 }
