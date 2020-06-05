@@ -13,10 +13,11 @@ object ZipUnzip {
   @tailrec
   def pack(input: String, next: Int = 1, count: Int = 1, res: String = ""): String = {
     val (forward, backward) = (next + 1, next - 1)
+    lazy val updRes = s"$res${noOne(count)}${input(backward)}"
     (next > input.size, next == input.size , next < input.size && input(next) != input(backward)) match {
       case (true, _, _) => res
-      case (_, _, true) => pack(input, forward, 1, s"$res${noOne(count)}${input(backward)}")
-      case (_, true, _) => pack(input, forward, 1, s"$res${noOne(count)}${input(backward)}")
+      case (_, _, true) => pack(input, forward, 1, updRes)
+      case (_, true, _) => pack(input, forward, 1, updRes)
       case _            => pack(input, forward, count + 1, res)
     }
   }
